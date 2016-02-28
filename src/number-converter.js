@@ -34,6 +34,25 @@ const tens = [
   'ninety'
 ]
 
+const generateConverter = (number) => {
+  return () => {
+    const firstDigitOrTwo = Math.floor(number / 1000);
+    const restOfNumber = number % 1000;
+
+    let result = numberConverter(firstDigitOrTwo) + ' thousand';
+
+    if (restOfNumber === 0) {
+      return result;
+    }
+
+    if (restOfNumber < 100) {
+      result += ' and';
+    }
+
+    return result + ' ' + numberConverter(restOfNumber);
+  };
+};
+
 const numberConverter = (number) => {
   if (number === 0) {
     return '';
@@ -71,20 +90,7 @@ const numberConverter = (number) => {
 
   //TODO work out the pattern and make more generic
   if (number <= 999999) {
-    const firstDigitOrTwo = Math.floor(number / 1000);
-    const restOfNumber = number % 1000;
-
-    let result = numberConverter(firstDigitOrTwo) + ' thousand';
-
-    if (restOfNumber === 0) {
-      return result;
-    }
-
-    if (restOfNumber < 100) {
-      result += ' and';
-    }
-
-    return result + ' ' + numberConverter(restOfNumber);
+    return generateConverter(number).call();
   }
 };
 
